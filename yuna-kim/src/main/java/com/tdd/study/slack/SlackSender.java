@@ -1,23 +1,18 @@
-package com.tdd.study;
+package com.tdd.study.slack;
 
 import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONObject;
 import okhttp3.*;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
 @Slf4j
-@Component
-@Configuration
 public class SlackSender {
 
-    private static String webHookUrl;
-    private static String channel;
-    private static String username;
+    private String webHookUrl;
+    private String channel;
+    private String username;
 
-    @Autowired
     public SlackSender(String webHookUrl, String channel, String username) {
         this.webHookUrl = webHookUrl;
         this.channel = channel;
@@ -45,6 +40,7 @@ public class SlackSender {
 
         try {
             Response response = client.newCall(request).execute();
+            System.out.println(response.body());
         } catch (IOException e) {
             e.printStackTrace();
         }
