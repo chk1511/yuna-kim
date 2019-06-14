@@ -68,8 +68,7 @@ public class WantedUtil {
 	        		jsonStr = data;
 	        	}
 	        }        
-		}
-		
+		}		
 		return jsonStr;
 	}
 	
