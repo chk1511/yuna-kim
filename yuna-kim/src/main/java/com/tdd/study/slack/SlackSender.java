@@ -10,20 +10,17 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 @Slf4j
-@Component
-@Configuration
 public class SlackSender {
 
-    private static String webHookUrl;
-    private static String channel;
-    private static String username;
-
-//    @Autowired
-//    public SlackSender(String webHookUrl, String channel, String username) {
-//        this.webHookUrl = webHookUrl;
-//        this.channel = channel;
-//        this.username = username;
-//    }
+    private String webHookUrl;
+    private String channel;
+    private String username;
+  
+    public SlackSender(String webHookUrl, String channel, String username) {
+        this.webHookUrl = webHookUrl;
+        this.channel = channel;
+        this.username = username;
+    }
 
     public void send() {
         OkHttpClient client = new OkHttpClient();
@@ -46,6 +43,7 @@ public class SlackSender {
 
         try {
             Response response = client.newCall(request).execute();
+            System.out.println(response.body());
         } catch (IOException e) {
             e.printStackTrace();
         }
