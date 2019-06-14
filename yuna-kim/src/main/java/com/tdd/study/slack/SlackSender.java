@@ -1,8 +1,9 @@
-package com.tdd.study;
+package com.tdd.study.slack;
 
 import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONObject;
 import okhttp3.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
@@ -17,12 +18,12 @@ public class SlackSender {
     private static String channel;
     private static String username;
 
-    @Autowired
-    public SlackSender(String webHookUrl, String channel, String username) {
-        this.webHookUrl = webHookUrl;
-        this.channel = channel;
-        this.username = username;
-    }
+//    @Autowired
+//    public SlackSender(String webHookUrl, String channel, String username) {
+//        this.webHookUrl = webHookUrl;
+//        this.channel = channel;
+//        this.username = username;
+//    }
 
     public void send() {
         OkHttpClient client = new OkHttpClient();

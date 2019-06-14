@@ -1,0 +1,40 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<!-- sidebar: style can be found in sidebar.less -->
+<section class="sidebar">
+    <!-- sidebar menu: : style can be found in sidebar.less -->
+    <div class="user-panel" style="height: 63px;">
+        <div class="pull-left image">
+            <!--<div class="profileImage" th:text="${#strings.substring(#authentication.name,0,1)}"></div>-->
+        </div>
+        <div class="pull-left info">
+            <!--<p sec:authentication="name"></p>-->
+            <!--Roles: <span sec:authentication="principal.authorities"></span>-->
+            <!--<a href="#"><i class="fa fa-circle text-success"></i> Online</a>-->
+        </div>
+    </div>
+
+    <ul class="sidebar-menu tree" data-widget="tree">
+        <li class="header">MAIN NAVIGATION</li>
+        <li th:class="${(#strings.startsWith(#httpServletRequest.requestURI, '/admin/dashboard'))? 'active': ''}">
+            <a href="/admin/dashboard">
+                <i class="fa fa-dashboard" style="font-size:15px;vertical-align:middle"></i> <span
+                    style="vertical-align:middle">Dashboard</span>
+            </a>
+        </li>
+        <li th:class="${(#strings.startsWith(#httpServletRequest.requestURI, '/admin/scheduler'))? 'active': ''}">
+            <a href="/admin/scheduler/list">
+                <i class="fa fa-clock-o" style="font-size:15px;vertical-align:middle"></i> <span
+                    style="vertical-align:middle">Scheduler</span>
+            </a>
+        </li>
+        <li th:class="${(#strings.startsWith(#httpServletRequest.requestURI, '/admin/adminUser'))? 'active': ''}">
+            <a href="/admin/adminUser/list">
+                <i class="fa fa-user-secret" style="font-size:15px;vertical-align:middle"></i> <span
+                    style="vertical-align:middle">Admin User</span>
+            </a>
+        </li>
+        <!--fa-comments-o-->
+    </ul>
+</section>
+<!-- /.sidebar -->
