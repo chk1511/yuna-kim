@@ -15,21 +15,20 @@
                 var formElement = $('#crawlerForm')[0];
                 var formData = new FormData(formElement);
 
-                // $.ajax({
-                //     type: "POST",
-                //     url: "/admin/designer/create",
-                //     data: formData,
-                //     processData: false,
-                //     contentType: false,
-                //     success: function (data) {
-                //         alert("등록이 완료되었습니다.！");
-                //         window.location.href = '/admin/designer/list';
-                //     },
-                //     error: function (error) {
-                //         console.log(error);
-                //         alert("등록 실패！");
-                //     }
-                // });
+                $.ajax({
+                    type: "GET",
+                    url: "/admin/search",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (data) {
+                        console.log(data);
+                    },
+                    error: function (error) {
+                        console.log(error);
+                        alert("등록 실패！");
+                    }
+                });
 
                 return false;
             }).on('keyup keypress', function (e) {
