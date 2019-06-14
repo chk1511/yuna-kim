@@ -1,0 +1,74 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:if="${#strings.startsWith(#httpServletRequest.requestURI, '/admin/service')} == true">
+    <h1>
+        Service
+        <small th:if="${#strings.contains(#httpServletRequest.requestURI,'list')}">list</small>
+        <small th:if="${#strings.contains(#httpServletRequest.requestURI,'update')}">edit</small>
+        <small th:if="${#strings.contains(#httpServletRequest.requestURI,'create')}">create</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/admin/service/list"><i class="fa fa-server"
+                                               style="font-size:15px;vertical-align:middle"></i> Service</a></li>
+        <li class="active" th:if="${#strings.contains(#httpServletRequest.requestURI,'list')}">list</li>
+        <li class="active" th:if="${#strings.contains(#httpServletRequest.requestURI,'update')}">edit</li>
+        <li class="active" th:if="${#strings.contains(#httpServletRequest.requestURI,'create')}">create</li>
+    </ol>
+</th:block>
+
+<th:block th:if="${#strings.startsWith(#httpServletRequest.requestURI, '/admin/pushEvent')} == true">
+    <h1>
+        PushEvent
+        <small th:if="${#strings.contains(#httpServletRequest.requestURI,'list')}">list</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/admin/pushEvent/list"><i class="fa fa-send"
+                                                  style="font-size:15px;vertical-align:middle"></i> PushEvent</a>
+        </li>
+        <li class="active" th:if="${#strings.contains(#httpServletRequest.requestURI,'list')}">list</li>
+    </ol>
+</th:block>
+
+<th:block th:if="${#strings.startsWith(#httpServletRequest.requestURI, '/admin/scheduler')} == true">
+    <h1>
+        Scheduler
+        <small th:if="${#strings.contains(#httpServletRequest.requestURI,'list')}">list</small>
+        <small th:if="${#strings.contains(#httpServletRequest.requestURI,'update')}">edit</small>
+        <small th:if="${#strings.contains(#httpServletRequest.requestURI,'create')}">create</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/admin/scheduler/list"><i class="fa fa-clock-o" style="font-size:15px;vertical-align:middle"></i>
+            Scheduler</a></li>
+        <li class="active" th:if="${#strings.contains(#httpServletRequest.requestURI,'list')}">list</li>
+        <li class="active" th:if="${#strings.contains(#httpServletRequest.requestURI,'update')}">edit</li>
+        <li class="active" th:if="${#strings.contains(#httpServletRequest.requestURI,'create')}">create</li>
+    </ol>
+</th:block>
+
+<th:block th:if="${#strings.startsWith(#httpServletRequest.requestURI, '/admin/adminUser')} == true">
+    <h1>
+        Admin User
+        <small th:if="${#strings.contains(#httpServletRequest.requestURI,'list')}">list</small>
+        <small th:if="${#strings.contains(#httpServletRequest.requestURI,'update')}">edit</small>
+        <small th:if="${#strings.contains(#httpServletRequest.requestURI,'create')}">create</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/admin/adminUser/list"><i class="fa fa-user-secret" style="font-size:15px;vertical-align:middle"></i>
+            Admin User</a></li>
+        <li class="active" th:if="${#strings.contains(#httpServletRequest.requestURI,'list')}">list</li>
+        <li class="active" th:if="${#strings.contains(#httpServletRequest.requestURI,'update')}">edit</li>
+        <li class="active" th:if="${#strings.contains(#httpServletRequest.requestURI,'create')}">create</li>
+    </ol>
+</th:block>
+
+<th:block th:if="${#strings.startsWith(#httpServletRequest.requestURI, '/admin/dashboard')} == true">
+    <h1>
+        DashBoard
+        <small>view</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/admin/dashboard"><i class="fa fa-dashboard"></i> DashBoard</a></li>
+        <li class="active">view</li>
+    </ol>
+</th:block>
