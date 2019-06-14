@@ -1,0 +1,82 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="admin/layout">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('select').select2();
+
+            $('#crawlerForm').on('submit', function () {
+
+                var formElement = $('#crawlerForm')[0];
+                var formData = new FormData(formElement);
+
+                // $.ajax({
+                //     type: "POST",
+                //     url: "/admin/designer/create",
+                //     data: formData,
+                //     processData: false,
+                //     contentType: false,
+                //     success: function (data) {
+                //         alert("등록이 완료되었습니다.！");
+                //         window.location.href = '/admin/designer/list';
+                //     },
+                //     error: function (error) {
+                //         console.log(error);
+                //         alert("등록 실패！");
+                //     }
+                // });
+
+                return false;
+            }).on('keyup keypress', function (e) {
+                var keyCode = e.keyCode || e.which;
+                if ((keyCode == 13) && ($(e.target)[0] != $("textarea")[0])) {
+                    e.preventDefault();
+                    return false;
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+<div class="row" layout:fragment="content" style="margin-top:10px;">
+    <div class="col-md-12">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">CrawlerTest</h3>
+            </div>
+            <!-- form start -->
+            <form role="form" id="crawlerForm" name="crawlerForm" class="AVAST_PAM_loginform" method="post"
+                  action="/crawler">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="brand">brand</label>
+                                <input type="text" class="form-control" id="brand" name="brand" placeholder="brand">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="productType">productType</label>
+                                <select class="form-control select2 select2-hidden-accessible" id="productType"
+                                        name="productType" style="width: 100%;" tabindex="-1" aria-hidden="true">
+                                    <option selected="selected" value="all">All</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-footer">
+                    <button type="submit" class="btn btn-primary">검색</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
