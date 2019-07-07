@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
@@ -29,7 +30,7 @@ public class DashboardController {
 
     @RequestMapping(value="search")
     public @ResponseBody String
-    search(){
+    search(@RequestParam(value = "query") String query){
 
 //        RestTemplate restTemplate = new RestTemplate();
 //        ResponseEntity<Object[]> responseEntity = restTemplate.getForEntity("https://www.wanted.co.kr/api/v4/search?1560515032799&job_sort=job.latest_order&locations=all&years=-1&country=kr&query=%EA%B0%9C%EB%B0%9C", Object[].class);
@@ -48,7 +49,7 @@ public class DashboardController {
 //        jsonObject.put("text", "Test");
 
         Request request = new Request.Builder()
-                .url("https://www.wanted.co.kr/api/v4/search?1560515032799&job_sort=job.latest_order&locations=all&years=-1&country=kr&query=%EA%B0%9C%EB%B0%9C")
+                .url("https://www.wanted.co.kr/api/v4/search?1560515032799&job_sort=job.latest_order&locations=all&years=-1&country=kr&query="+ query)
                 .get()
                 .addHeader("accept", "application/json")
                 .build();
