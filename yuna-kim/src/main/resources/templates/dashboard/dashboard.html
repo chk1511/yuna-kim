@@ -13,23 +13,23 @@
             $('#crawlerForm').on('submit', function () {
 
                 var formElement = $('#crawlerForm')[0];
-                var formData = new FormData(formElement);
+                // var formData = new FormData(formElement);
 
-                // $.ajax({
-                //     type: "POST",
-                //     url: "/admin/designer/create",
-                //     data: formData,
-                //     processData: false,
-                //     contentType: false,
-                //     success: function (data) {
-                //         alert("등록이 완료되었습니다.！");
-                //         window.location.href = '/admin/designer/list';
-                //     },
-                //     error: function (error) {
-                //         console.log(error);
-                //         alert("등록 실패！");
-                //     }
-                // });
+                $.ajax({
+                    type: "GET",
+                    url: "/admin/search?query=" + $('#query').val(),
+                    // data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (data) {
+                        console.log(data);
+
+                    },
+                    error: function (error) {
+                        console.log(error);
+                        alert("등록 실패！");
+                    }
+                });
 
                 return false;
             }).on('keyup keypress', function (e) {
@@ -56,8 +56,8 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="brand">brand</label>
-                                <input type="text" class="form-control" id="brand" name="brand" placeholder="brand">
+                                <label for="query">query</label>
+                                <input type="text" class="form-control" id="query" name="query" placeholder="query">
                             </div>
                         </div>
                         <div class="col-md-6">
