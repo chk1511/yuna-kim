@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -12,15 +11,11 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.xmlunit.util.Nodes;
 
 import com.tdd.study.admin.model.DashboardModel;
 import com.tdd.study.admin.util.DashboardUtil;
 
 import lombok.extern.slf4j.Slf4j;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 @Slf4j
 @Service
@@ -29,32 +24,33 @@ public class DashboardService {
 	@Autowired
 	private DashboardUtil dashboardUtil;
 	
-	public static void main(String[] args) throws Exception{
-		
-		getProgrammers("개발");
-	}
+//	/**
+//	 * 리스트
+//	 * @return
+//	 * @throws Exception
+//	 */
+//	public List<DashboardModel> search(String query, String productType) throws Exception{
+//		
+//		List<DashboardModel> list = new ArrayList<>();
+//		
+//		switch (productType) {
+//		case "ALL" :
+//			break;
+//		}
+//		
+//		return list;
+//	}
 
 	/**
 	 * 원티드 데이터
 	 * @return
 	 * @throws Exception 
 	 */
-	@SuppressWarnings("unused")
 	public List<DashboardModel> getWanted(String query) throws Exception{
 		
-		String returnStr = "";
-        OkHttpClient client = new OkHttpClient();
-        okhttp3.MediaType mediaType = okhttp3.MediaType.parse("application/json");
-
-        Request request = new Request.Builder()
-                .url("https://www.wanted.co.kr/api/v4/search?1560515032799&job_sort=job.latest_order&locations=all&years=-1&country=kr&query="+ query)
-                .get()
-                .addHeader("accept", "application/json")
-                .build();
-
-        Response response = client.newCall(request).execute();
-        returnStr = response.body().string();
-        log.debug(returnStr);
+        String url = "https://www.wanted.co.kr/api/v4/search?1560515032799&job_sort=job.latest_order&locations=all&years=-1&country=kr&query="+ query;
+        
+        String returnStr = this.dashboardUtil.callData(url);
         
         JSONObject json = new JSONObject(returnStr);
         json = (JSONObject) json.get("data");
@@ -92,7 +88,7 @@ public class DashboardService {
 	 * @return
 	 * @throws Exception 
 	 */
-	public static List<DashboardModel> getProgrammers(String query) throws Exception{
+	public List<DashboardModel> getProgrammers(String query) throws Exception{
 		
 		String url = "https://programmers.co.kr/job";
 		
@@ -101,8 +97,12 @@ public class DashboardService {
 		
 		DashboardModel model;
 		int id;
+		String position;
+		String companyName;
 		String location;
 		String experience;
+		
+		List<DashboardModel> list = new ArrayList<>();
 		
 		for(Element el : els){
 			
@@ -111,21 +111,80 @@ public class DashboardService {
 			Elements e = el.getElementsByTag("a");
 			String href = e.get(0).attr("href");
 			String[] hrefArr = href.split("/");
+			
 			id = Integer.parseInt(hrefArr[hrefArr.length -1]);
+			position = e.text();
 			model.setId(id);
-						
+			model.setPosition(position);
+			
+			companyName = el.getElementsByClass("company-name").text();
+			model.setCompanyName(companyName);
+									
 			location = el.getElementsByClass("location").text();
 			model.setLocation(location);
 			
 			experience = el.getElementsByClass("experience").text();
 			model.setExperience(experience);
 			
-			System.out.println(id);
-			System.out.println(location);
-			System.out.println(experience);
+			list.add(model);
 		}
 		
+		return list;
+	}
+	
+	/**
+	 * 프로그래머스 데이터
+	 * @return
+	 * @throws Exception 
+	 */
+	public List<DashboardModel> getRocketPunch(String query) throws Exception{
 		
-		return new ArrayList<>();
+		String url = "https://www.rocketpunch.com/api/jobs/template?keywords="+query;
+				        
+		String returnStr = this.dashboardUtil.callData(url);
+        
+        JSONObject json = new JSONObject(returnStr);
+        json = (JSONObject) json.get("data");
+        String template = json.getString("template");
+        
+        Document doc = Jsoup.parse(template);
+        Elements els = doc.getElementsByClass("company active job-ad-group item");
+		
+        DashboardModel model;
+		int id;
+		String position;
+		String companyName;
+		String experience;
+		String dueTime;
+		
+		List<DashboardModel> list = new ArrayList<>();
+        
+        for(Element el : els){
+        	
+        	model = new DashboardModel();
+        	
+        	Element e = el.getElementsByClass("company-name").get(0);
+        	companyName = e.getElementsByTag("strong").get(0).text();
+        	model.setCompanyName(companyName);
+        	
+        	experience = e.getElementsByClass("job-stat-info").get(0).text().split("/")[1].trim();
+        	model.setExperience(experience);
+        	
+        	e = el.getElementsByClass("company-jobs-detail").get(0);
+        	e = e.getElementsByTag("a").get(0);
+        	id = Integer.parseInt(e.attr("data-job_id"));
+        	model.setId(id);
+        	
+        	position = e.text();
+        	model.setPosition(position);
+        	
+        	e = e.getElementsByClass("job-dates").get(0);
+        	dueTime = e.getElementsByTag("span").get(0).text();
+        	model.setDueTime(dueTime);
+        	
+        	list.add(model);
+        }
+        
+		return list;
 	}
 }
