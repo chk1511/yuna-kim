@@ -27,15 +27,15 @@ public class DashboardController {
         return "dashboard/dashboard";
     }
 
+//	@RequestMapping(value="search")
+//    public @ResponseBody List<DashboardModel>
+//    search(@RequestParam(value = "query") String query) throws Exception{
+//    	return this.dashboardService.getWanted(query);
+//    }
+	
 	@RequestMapping(value="search")
     public @ResponseBody List<DashboardModel>
-    search(@RequestParam(value = "query") String query) throws Exception{
-    	return this.dashboardService.getWanted(query);
+	search(@RequestParam(value = "query") String query, @RequestParam(value = "productType", required=false) String productType) throws Exception{
+    	return this.dashboardService.search(query, productType);
     }
-	
-//	RequestMapping(value="search")
-//    public @ResponseBody List<DashboardModel>
-//    search(@RequestParam(value = "query") String query, @RequestParam(value = "productType") String productType) throws Exception{
-//    	return this.dashboardService.search(query, productType);
-//    }
 }

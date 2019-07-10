@@ -24,29 +24,63 @@ public class DashboardService {
 	@Autowired
 	private DashboardUtil dashboardUtil;
 	
-//	/**
-//	 * 리스트
-//	 * @return
-//	 * @throws Exception
-//	 */
-//	public List<DashboardModel> search(String query, String productType) throws Exception{
-//		
-//		List<DashboardModel> list = new ArrayList<>();
-//		
-//		switch (productType) {
-//		case "ALL" :
-//			break;
-//		}
-//		
-//		return list;
-//	}
+	/**
+	 * 리스트
+	 * @return
+	 * @throws Exception
+	 */
+	public List<DashboardModel> search(String query, String productType) throws Exception{
+		
+		List<DashboardModel> list = new ArrayList<>();
+		
+		if(productType == null){
+			list = getAll(list, query);
+			return list;
+		}
+		
+		// 1 : 원티드, 2 : 프로그래머스, 3 : 로켓펀치
+		switch (productType) {
+		case "ALL" :
+				list = getAll(list, query);
+			break;
+		case "1" :
+				list = getWanted(list, query);
+			break;
+		case "2" :
+				list = getProgrammers(list, query);
+			break;
+		case "3" :
+				list = getRocketPunch(list, query);
+			break;
+		default:
+				list = getAll(list, query);
+			break;
+		}
+		
+		return list;
+	}
+	
+	/**
+	 * 모든 사이트의 데이터
+	 * @param query
+	 * @return
+	 * @throws Exception
+	 */
+	public List<DashboardModel> getAll(List<DashboardModel> list, String query) throws Exception{
+		
+		list = getWanted(list, query);
+		list = getProgrammers(list, query);
+		list = getRocketPunch(list, query);
+		
+		return list;
+	}
 
 	/**
 	 * 원티드 데이터
 	 * @return
 	 * @throws Exception 
 	 */
-	public List<DashboardModel> getWanted(String query) throws Exception{
+	public List<DashboardModel> getWanted(List<DashboardModel> list, String query) throws Exception{
 		
         String url = "https://www.wanted.co.kr/api/v4/search?1560515032799&job_sort=job.latest_order&locations=all&years=-1&country=kr&query="+ query;
         
@@ -57,8 +91,6 @@ public class DashboardService {
         
         JSONArray arr = new JSONArray();
         arr = (JSONArray) json.getJSONArray("jobs");
-        
-        List<DashboardModel> list = new ArrayList<>();
         
         for(int i=0; i<arr.length(); i++){
         	
@@ -88,7 +120,7 @@ public class DashboardService {
 	 * @return
 	 * @throws Exception 
 	 */
-	public List<DashboardModel> getProgrammers(String query) throws Exception{
+	public List<DashboardModel> getProgrammers(List<DashboardModel> list, String query) throws Exception{
 		
 		String url = "https://programmers.co.kr/job";
 		
@@ -101,8 +133,6 @@ public class DashboardService {
 		String companyName;
 		String location;
 		String experience;
-		
-		List<DashboardModel> list = new ArrayList<>();
 		
 		for(Element el : els){
 			
@@ -137,7 +167,7 @@ public class DashboardService {
 	 * @return
 	 * @throws Exception 
 	 */
-	public List<DashboardModel> getRocketPunch(String query) throws Exception{
+	public List<DashboardModel> getRocketPunch(List<DashboardModel> list, String query) throws Exception{
 		
 		String url = "https://www.rocketpunch.com/api/jobs/template?keywords="+query;
 				        
@@ -156,8 +186,6 @@ public class DashboardService {
 		String companyName;
 		String experience;
 		String dueTime;
-		
-		List<DashboardModel> list = new ArrayList<>();
         
         for(Element el : els){
         	
@@ -167,8 +195,13 @@ public class DashboardService {
         	companyName = e.getElementsByTag("strong").get(0).text();
         	model.setCompanyName(companyName);
         	
-        	experience = e.getElementsByClass("job-stat-info").get(0).text().split("/")[1].trim();
-        	model.setExperience(experience);
+        	experience = el.getElementsByClass("job-stat-info").get(0).text();
+        	
+        	// 경력 데이터가 일정한 규칙이 없음
+        	if(experience.contains("/")){
+        		experience = experience.split("/")[1].trim();
+        		model.setExperience(experience);
+        	}
         	
         	e = el.getElementsByClass("company-jobs-detail").get(0);
         	e = e.getElementsByTag("a").get(0);
@@ -178,7 +211,7 @@ public class DashboardService {
         	position = e.text();
         	model.setPosition(position);
         	
-        	e = e.getElementsByClass("job-dates").get(0);
+        	e = el.getElementsByClass("job-dates").get(0);
         	dueTime = e.getElementsByTag("span").get(0).text();
         	model.setDueTime(dueTime);
         	
