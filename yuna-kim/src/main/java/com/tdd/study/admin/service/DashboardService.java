@@ -109,6 +109,8 @@ public class DashboardService {
         	model.setPosition(this.dashboardUtil.JsonObjNullChk(obj, "position"));
         	model.setDueTime(this.dashboardUtil.JsonObjNullChk(obj, "due_time"));
         	
+        	model.setProductType("원티드");
+        	
         	list.add(model);
         }
 
@@ -155,6 +157,8 @@ public class DashboardService {
 			
 			experience = el.getElementsByClass("experience").text();
 			model.setExperience(experience);
+			
+			model.setProductType("프로그래머스");
 			
 			list.add(model);
 		}
@@ -214,6 +218,8 @@ public class DashboardService {
         	e = el.getElementsByClass("job-dates").get(0);
         	dueTime = e.getElementsByTag("span").get(0).text();
         	model.setDueTime(dueTime);
+        	
+        	model.setProductType("로켓펀치");
         	
         	list.add(model);
         }

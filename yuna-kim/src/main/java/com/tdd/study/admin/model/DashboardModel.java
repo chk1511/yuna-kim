@@ -16,4 +16,5 @@ public class DashboardModel {
 	private String position;
 	private String dueTime;
 	private String experience;
+	private String productType;
 }
